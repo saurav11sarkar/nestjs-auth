@@ -26,6 +26,7 @@ export default tseslint.config(
   },
   {
     rules: {
+       "@typescript-eslint/no-unsafe-assignment": "error",
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-floating-promises': 'warn',
       '@typescript-eslint/no-unsafe-argument': 'warn',

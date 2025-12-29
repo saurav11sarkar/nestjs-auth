@@ -24,7 +24,6 @@ import config from './config/config';
     }),
 
     UserModule,
-
     AuthModule,
   ],
   controllers: [AppController],
