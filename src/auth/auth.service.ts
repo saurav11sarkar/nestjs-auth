@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { Request, Response } from 'express';
+import { JwtPayload } from './auth.guard';
 
 @Injectable()
 export class AuthService {
@@ -72,15 +73,15 @@ export class AuthService {
   }
 
   async refreshToken(req: Request) {
-    const token = req.cookies?.refreshToken;
+    const token = req.cookies?.refreshToken as string;
 
     if (!token) {
       throw new UnauthorizedException('No token provided');
     }
 
     try {
-      const payload = await this.jwtService.verify(token, {
-        secret: process.env.JWT_REFRESH_SECRET,
+      const payload = this.jwtService.verify<JwtPayload>(token, {
+        secret: process.env.JWT_REFRESH_SECRET as string,
       });
       if (!payload) throw new UnauthorizedException('Invalid token');
 
