@@ -1,6 +1,7 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './enities/user.entites';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('user')
 export class UserController {
@@ -8,11 +9,17 @@ export class UserController {
 
   @Post()
   async createUser(@Body() payload: Partial<User>) {
-    return await this.userService.createUser(payload);
+    return this.userService.createUser(payload);
   }
 
-  @Post('/all')
-  async fildAllUsers() {
-    return await this.userService.fildAllUsers();
+  @Get()
+  async findAllUsers() {
+    return this.userService.findAllUsers();
+  }
+
+  @UseGuards(AuthGuard('admin'))
+  @Get(':id')
+  async findUserById(@Param('id') id: string) {
+    return this.userService.findUserById(id);
   }
 }
